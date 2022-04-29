@@ -1,0 +1,9 @@
+README.md
+.github
+.git
+Dockerfile
+.dockerignore
+__pycache__
+oauth
+venv
+.gitignore

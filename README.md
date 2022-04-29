@@ -6,9 +6,9 @@ Note: When you create the Oauth application, the `Authorization callback URL` sh
 
 You need to provide the following environment variables:
 
-1. `GITHUB_OAUTH_CLIENT_ID` - The client ID of your Oauth application
-2. `GITHUB_OAUTH_CLIENT_SECRET` - Generate a client secret in your Oauth application and add it here
-3. `GITHUB_LOGIN` - The users Github login ID
+1. `GH_OAUTH_CLIENT_ID` - The client ID of your Oauth application
+2. `GH_OAUTH_CLIENT_SECRET` - Generate a client secret in your Oauth application and add it here
+3. `GH_LOGIN` - The users Github login ID
 
 Here are the steps to run this script
 
@@ -21,7 +21,19 @@ pip3 install -r requirements.txt
 python3 get_gho.py --nobrowser --validate
 ```
 
-The flags `--nobrowser` and `--validate` are optional.
+Want docker?
+
+```bash
+export GH_OAUTH_CLIENT_ID=<your client id>
+export GH_OAUTH_CLIENT_SECRET=<your client secret>
+export GH_LOGIN=<your github login>
+env | grep GH_ > .env
+docker pull ghcr.io/navhits/get-ghoauth-token/get-ghoauth-token:latest
+docker tag ghcr.io/navhits/get-ghoauth-token/get-ghoauth-token:latest get-ghoauth-token:latest
+docker run --rm --env-file .env get-ghoauth-token:latest --validate
+```
+
+The flags `--nobrowser` and `--validate` are optional. (`--nobrowser` is set by default in the docker image)
 
 * `--nobrowser` will tell the script to present the authorization URL in terminal and not open the browser. This is useful for non-interactive environments.
 * `--validate` will tell the script to validate the recieved Oauth token.
