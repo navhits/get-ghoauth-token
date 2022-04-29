@@ -1,0 +1,47 @@
+name: Docker image builder
+
+on:
+  workflow_dispatch:
+    inputs:    
+      OAUTH_CLIENT_ID:
+        description: Oauth Client ID
+        required: true
+      OAUTH_CLIENT_SECRET:
+        description: Oauth Client secret
+        required: true
+      GITHUB_LOGIN_ID:
+        description: Login user ID
+        required: true
+      VALIDATE_TOKEN:
+        type: boolean
+        description: Validate token?
+        required: true
+        
+jobs:
+  get-gho-image-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Building Docker Image
+        run: |
+          export GH_OAUTH_CLIENT_ID = ${{ github.event.inputs.OAUTH_CLIENT_ID }}
+          export GH_OAUTH_CLIENT_SECRET = ${{ github.event.inputs.OAUTH_CLIENT_SECRET }}
+          export GH_LOGIN = ${{ github.event.inputs.GITHUB_LOGIN_ID }}
+          env | grep GH_ > runtime.env
+          VALIDATE = ${{ github.event.inputs.VALIDATE_TOKEN }}
+          
+          DOCKER_REGISTRY="ghcr.io"
+          GH_OWNER=$(echo $GITHUB_REPOSITORY | cut -f1 -d\/)
+          GH_REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -f2 -d\/)
+          IMAGE_TAG=latest
+
+          DOCKER_IMAGE="$DOCKER_REGISTRY/$GH_OWNER/$GH_REPO_NAME/$GH_REPO_NAME"
+          echo $GITHUB_TOKEN | docker login -u $GITHUB_ACTOR --password-stdin $DOCKER_REGISTRY
+          
+          docker pull $DOCKER_IMAGE:$IMAGE_TAG
+          docker logout $DOCKER_REGISTRY
+
+          docker run --rm --env-file runtime.env $DOCKER_IMAGE:$IMAGE_TAG
+          rm runtime.env
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

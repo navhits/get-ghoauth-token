@@ -1,0 +1,36 @@
+name: Docker image builder
+
+on:
+  workflow_dispatch:
+  push:
+    paths-ignore:
+      - README.md
+      - .github/workflows/run.yml
+    branches:
+      - main
+
+jobs:
+  get-gho-image-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Building Docker Image
+        run: |
+          DOCKER_REGISTRY="ghcr.io"
+          GH_OWNER=$(echo $GITHUB_REPOSITORY | cut -f1 -d\/)
+          GH_REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -f2 -d\/)
+          GH_BRANCH=$(echo $GITHUB_REF | rev | cut -f1 -d\/ | rev)
+
+          # Main and latest tag will be the same image. So we'll keep just one.
+          if [[ $GH_BRANCH == main ]]; then
+            GH_BRANCH=latest
+          fi
+          
+          DOCKER_IMAGE="$DOCKER_REGISTRY/$GH_OWNER/$GH_REPO_NAME/$GH_REPO_NAME"
+          echo $GITHUB_TOKEN | docker login -u $GITHUB_ACTOR --password-stdin $DOCKER_REGISTRY
+          
+          docker build -t $DOCKER_IMAGE:$GH_BRANCH
+          docker push $DOCKER_IMAGE:$GH_BRANCH
+          docker logout $DOCKER_REGISTRY
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
