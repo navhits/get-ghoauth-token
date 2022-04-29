@@ -26,7 +26,7 @@ jobs:
             GH_BRANCH=latest
           fi
           
-          DOCKER_IMAGE="$DOCKER_REGISTRY/$GH_OWNER/$GH_REPO_NAME/$GH_REPO_NAME"
+          DOCKER_IMAGE="$DOCKER_REGISTRY/$GH_OWNER/$GH_REPO_NAME/get-gho"
           echo $GITHUB_TOKEN | docker login -u $GITHUB_ACTOR --password-stdin $DOCKER_REGISTRY
           
           docker build -t $DOCKER_IMAGE:$GH_BRANCH .
