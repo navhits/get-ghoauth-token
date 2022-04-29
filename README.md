@@ -28,8 +28,8 @@ export GH_OAUTH_CLIENT_ID=<your client id>
 export GH_OAUTH_CLIENT_SECRET=<your client secret>
 export GH_LOGIN=<your github login>
 env | grep GH_ > .env
-docker pull ghcr.io/navhits/get-ghoauth-token/get-ghoauth-token:latest
-docker tag ghcr.io/navhits/get-ghoauth-token/get-ghoauth-token:latest get-ghoauth-token:latest
+docker pull ghcr.io/navhits/get-ghoauth-token/get-gho:latest
+docker tag ghcr.io/navhits/get-ghoauth-token/get-gho:latest get-gho:latest
 docker run --rm --env-file .env get-ghoauth-token:latest --validate
 ```
 
