@@ -18,7 +18,7 @@ cd get-ghoauth-token
 python3 -m virtualenv venv
 . venv/bin/activate
 pip3 install -r requirements.txt
-python3 get_gho.py --nobrowser --validate
+python3 get_gho.py --validate
 ```
 
 Want docker?
@@ -32,8 +32,3 @@ docker pull ghcr.io/navhits/get-ghoauth-token/get-gho:latest
 docker tag ghcr.io/navhits/get-ghoauth-token/get-gho:latest get-gho:latest
 docker run --rm --env-file .env -p 8000:8000 get-ghoauth-token:latest --validate
 ```
-
-The flags `--nobrowser` and `--validate` are optional. (`--nobrowser` is set by default in the docker image)
-
-* `--nobrowser` will tell the script to present the authorization URL in terminal and not open the browser. This is useful for non-interactive environments.
-* `--validate` will tell the script to validate the recieved Oauth token.

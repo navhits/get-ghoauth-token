@@ -3,4 +3,4 @@ WORKDIR /app
 COPY . .
 RUN pip install -r requirements.txt --no-cache-dir
 EXPOSE 8000
-ENTRYPOINT [ "python", "get_gho.py", "--nobrowser"]
+ENTRYPOINT [ "python", "get_gho.py"]

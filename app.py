@@ -1,5 +1,5 @@
 
-import dbm
+import shelve
 import contextlib
 import time
 import threading
@@ -12,11 +12,11 @@ from config import *
 app = FastAPI()
 
 @app.get("/callback")
-def callback(code: str) -> dict:
+def callback(code: str) -> str:
     # Storing the recieved code to in memory db
-    with dbm.open('oauth', 'c') as db:
+    with shelve.open('oauth', 'c') as db:
         db['code'] = code
-    return {"code": code}
+    return "You can close this window now"
 
 
 # Reference: https://github.com/encode/uvicorn/discussions/1103#discussioncomment-941736
