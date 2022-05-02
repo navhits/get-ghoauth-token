@@ -1,4 +1,4 @@
-name: Docker image builder
+name: Test Run
 
 on:
   workflow_dispatch:
@@ -18,11 +18,11 @@ on:
         required: true
         
 jobs:
-  get-gho-image-build:
+  get-gho-test-run:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Building Docker Image
+      - name: Test run
         run: |
           export GH_OAUTH_CLIENT_ID = ${{ github.event.inputs.OAUTH_CLIENT_ID }}
           export GH_OAUTH_CLIENT_SECRET = ${{ github.event.inputs.OAUTH_CLIENT_SECRET }}
