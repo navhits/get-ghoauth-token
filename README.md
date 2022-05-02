@@ -30,7 +30,7 @@ export GH_LOGIN=<your github login>
 env | grep GH_ > .env
 docker pull ghcr.io/navhits/get-ghoauth-token/get-gho:latest
 docker tag ghcr.io/navhits/get-ghoauth-token/get-gho:latest get-gho:latest
-docker run --rm --env-file .env get-ghoauth-token:latest --validate
+docker run --rm --env-file .env -p 8000:8000 get-ghoauth-token:latest --validate
 ```
 
 The flags `--nobrowser` and `--validate` are optional. (`--nobrowser` is set by default in the docker image)
