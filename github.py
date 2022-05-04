@@ -12,7 +12,7 @@ server = Server(config=config)
 
 
 def github_authorize(client_id: str, login: str) -> str:
-    url = f"{authorize_endpoint}?client_id={client_id}&redirect_uri={redirect_uri}&scope=user&response_type=code&login={login}"
+    url = f"{authorize_endpoint}?client_id={client_id}&redirect_uri={redirect_uri}&scope=user%20repo&response_type=code&login={login}"
     code = None
     with server.run_in_thread():
         
